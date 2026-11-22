@@ -1,0 +1,19 @@
+{
+  "frame": {
+    "width": 600,
+    "height": 800
+  },
+  "pivot": {
+    "x": 0.5,
+    "y": 1.0
+  },
+  "poses": {
+    "sleep": {
+      "file": "sleep.png",
+      "pivot": {
+        "x": 0.5,
+        "y": 0.75
+      }
+    }
+  }
+}

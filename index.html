@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>房子</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <img id="room-bg" alt="" />
+      <div id="actors">
+        <img id="room-fg" alt="" hidden />
+      </div>
+      <div id="hud" data-theme="day">
+        <nav id="nav" aria-label="房间"></nav>
+        <div id="clock" hidden></div>
+        <div id="house-tools">
+          <button id="settings-btn" type="button">设置</button>
+          <button id="diary-btn" type="button">日记</button>
+          <button id="mute-btn" type="button" aria-pressed="false">静音</button>
+        </div>
+        <div id="status"></div>
+        <div id="dock">
+          <div id="dialog" hidden>
+            <div class="dialog-inner">
+              <span class="dialog-icon" aria-hidden="true"></span>
+              <p class="dialog-text"></p>
+            </div>
+          </div>
+          <form id="compose" method="post" action="#" hidden>
+            <div class="compose-row">
+              <label class="compose-field">
+                <span class="compose-label">对象</span>
+                <select name="target" aria-label="对象"></select>
+              </label>
+              <label class="compose-field">
+                <span class="compose-label">音量</span>
+                <select name="volume" aria-label="音量"></select>
+              </label>
+              <label class="compose-field">
+                <span class="compose-label">语气</span>
+                <select name="tone" aria-label="语气"></select>
+              </label>
+              <label class="compose-field">
+                <span class="compose-label">篇幅</span>
+                <select name="length" aria-label="篇幅"></select>
+              </label>
+              <input type="text" name="text" maxlength="200" placeholder="说点什么…" autocomplete="off" enterkeyhint="send" />
+              <button type="button" id="mic-btn">按住说话</button>
+              <button type="submit">发送</button>
+            </div>
+            <p class="compose-error" hidden></p>
+          </form>
+        </div>
+      </div>
+      <div id="settings-panel" hidden></div>
+      <div id="diary-panel" hidden></div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

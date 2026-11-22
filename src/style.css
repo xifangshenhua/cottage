@@ -1,0 +1,1107 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #1a1612;
+}
+
+body {
+  font-family: "Noto Sans CJK SC", "Noto Sans SC", "Source Han Sans SC",
+    "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #5a4332;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+#room-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+#actors {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+#room-fg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 80;
+  pointer-events: none;
+  user-select: none;
+}
+
+.actor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  pointer-events: auto;
+  cursor: pointer;
+  opacity: 0;
+  transform-origin: 0 0;
+  transition: opacity var(--actor-fade, 200ms) ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.actor.is-on {
+  opacity: 1;
+}
+
+.actor.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.actor img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.actor.is-focused img {
+  filter: drop-shadow(0 0 10px rgba(255, 244, 220, 0.9)) drop-shadow(0 0 2px rgba(255, 255, 255, 0.65));
+}
+
+.actor-name {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, -110%);
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(255, 252, 248, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2px 8px rgba(80, 50, 20, 0.12);
+  color: #5a4332;
+  font: 500 12px/1.2 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.actor[data-pose="sleep"] .actor-name {
+  top: 52%;
+  transform: translate(-50%, -140%);
+}
+
+.actor-name[hidden] {
+  display: none;
+}
+
+#actors[data-theme="night"] .actor-name {
+  background: rgba(28, 32, 46, 0.78);
+  border-color: rgba(180, 200, 230, 0.22);
+  color: rgba(236, 238, 246, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+}
+
+#hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+
+#nav {
+  position: absolute;
+  top: 28px;
+  left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 132px;
+  pointer-events: auto;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 16px;
+  border: 1px solid rgba(160, 130, 100, 0.28);
+  border-radius: 18px;
+  background: rgba(255, 250, 244, 0.78);
+  box-shadow: 0 2px 10px rgba(80, 50, 20, 0.08);
+  color: #6a5544;
+  font: 500 16px/1 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 252, 248, 0.92);
+}
+
+.nav-btn.is-active {
+  background: rgba(255, 248, 238, 0.94);
+  border-color: rgba(160, 130, 100, 0.42);
+  box-shadow: 0 3px 12px rgba(80, 50, 20, 0.12);
+  color: #4e3d2e;
+  font-weight: 600;
+}
+
+.nav-btn svg {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#status {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  left: 170px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(255, 252, 248, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 2px 8px rgba(80, 50, 20, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #5a4332;
+  font: 500 14px/1 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  white-space: nowrap;
+}
+
+.chip-name {
+  cursor: pointer;
+  border: 1px solid rgba(160, 130, 100, 0.28);
+}
+
+.chip-name.is-active {
+  background: rgba(255, 248, 238, 0.95);
+  font-weight: 600;
+}
+
+.chip-name:not(.is-active) {
+  opacity: 0.72;
+}
+
+.chip .ico {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.chip .num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  margin-left: 1px;
+}
+
+#dock {
+  position: absolute;
+  left: 50%;
+  bottom: 72px;
+  transform: translateX(-50%);
+  width: min(920px, calc(100% - 160px));
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+#dialog {
+  position: relative;
+  width: 100%;
+  pointer-events: none;
+}
+
+#dialog[hidden] {
+  display: none;
+}
+
+#compose {
+  pointer-events: auto;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+#compose[hidden] {
+  display: none;
+}
+
+.compose-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 52px;
+  padding: 8px 10px 8px 14px;
+  border-radius: 22px;
+  background: rgba(255, 252, 248, 0.84);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 18px rgba(80, 50, 20, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.compose-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  color: #5a4332;
+  font: 500 12px/1 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.compose-label {
+  opacity: 0.72;
+}
+
+#compose select,
+#compose input[type="text"],
+#compose button {
+  font: 500 14px/1 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  color: #5a4332;
+}
+
+#compose select {
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(160, 130, 100, 0.28);
+  background: rgba(255, 252, 248, 0.9);
+  color: #4e3d2e;
+  cursor: pointer;
+  outline: none;
+}
+
+#compose input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: #5a4332;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  outline: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+#compose button[type="submit"] {
+  flex: 0 0 auto;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(160, 130, 100, 0.28);
+  background: rgba(255, 248, 238, 0.95);
+  color: #4e3d2e;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+#compose button[type="submit"]:hover:not(:disabled) {
+  background: rgba(255, 250, 244, 1);
+}
+
+#compose button[type="submit"][data-busy] {
+  opacity: 1;
+  min-width: 4.5em;
+}
+
+#compose #mic-btn {
+  flex: 0 0 auto;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(160, 130, 100, 0.28);
+  background: rgba(255, 252, 248, 0.95);
+  color: #4e3d2e;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+}
+
+#compose #mic-btn:hover:not(:disabled) {
+  background: rgba(255, 250, 244, 1);
+}
+
+#compose #mic-btn.is-recording,
+#compose #mic-btn.is-recognizing {
+  background: rgba(232, 196, 176, 0.95);
+  border-color: rgba(160, 90, 70, 0.4);
+}
+
+#compose input:disabled,
+#compose select:disabled,
+#compose button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.compose-error {
+  margin: 0 16px;
+  font: 500 13px/1.4 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  color: #8a4a32;
+  letter-spacing: 0.02em;
+}
+
+.compose-error[hidden] {
+  display: none;
+}
+
+.dialog-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 16px 26px;
+  border-radius: 22px;
+  background: rgba(255, 252, 248, 0.84);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 18px rgba(80, 50, 20, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.dialog-icon {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  color: #8a7464;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.dialog-text {
+  flex: 1;
+  font: 500 20px/1.55 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  color: #5a4332;
+  letter-spacing: 0.04em;
+}
+
+/* Night theme (小南房) */
+#hud[data-theme="night"] .nav-btn {
+  background: rgba(28, 36, 54, 0.62);
+  border-color: rgba(180, 200, 230, 0.22);
+  color: rgba(230, 236, 248, 0.9);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.22);
+}
+
+#hud[data-theme="night"] .nav-btn:hover {
+  background: rgba(36, 46, 68, 0.78);
+}
+
+#hud[data-theme="night"] .nav-btn.is-active {
+  background: rgba(42, 54, 80, 0.86);
+  border-color: rgba(200, 215, 240, 0.38);
+  color: #f2f5fb;
+}
+
+#hud[data-theme="night"] .chip {
+  background: rgba(28, 32, 46, 0.7);
+  border-color: rgba(180, 200, 230, 0.18);
+  color: rgba(236, 238, 246, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+}
+
+#hud[data-theme="night"] .chip-name.is-active {
+  background: rgba(42, 50, 70, 0.9);
+}
+
+#hud[data-theme="night"] .dialog-inner {
+  background: rgba(22, 26, 38, 0.78);
+  border-color: rgba(180, 200, 230, 0.14);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+}
+
+#hud[data-theme="night"] .dialog-text {
+  color: rgba(236, 238, 246, 0.95);
+}
+
+#hud[data-theme="night"] .dialog-icon {
+  color: rgba(210, 218, 235, 0.85);
+}
+
+#hud[data-theme="night"] .compose-row {
+  background: rgba(22, 26, 38, 0.78);
+  border-color: rgba(180, 200, 230, 0.14);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+}
+
+#hud[data-theme="night"] .compose-field,
+#hud[data-theme="night"] #compose select,
+#hud[data-theme="night"] #compose input[type="text"],
+#hud[data-theme="night"] #compose button[type="submit"],
+#hud[data-theme="night"] #compose #mic-btn {
+  color: rgba(236, 238, 246, 0.95);
+}
+
+#hud[data-theme="night"] #compose select,
+#hud[data-theme="night"] #compose button[type="submit"],
+#hud[data-theme="night"] #compose #mic-btn {
+  background: rgba(42, 50, 70, 0.9);
+  border-color: rgba(180, 200, 230, 0.22);
+}
+
+#hud[data-theme="night"] .compose-error {
+  color: rgba(255, 196, 176, 0.95);
+}
+
+
+#clock {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 36px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: rgba(255, 252, 248, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 2px 8px rgba(80, 50, 20, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #5a4332;
+  font: 500 14px/1 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+}
+
+#clock[hidden] {
+  display: none;
+}
+
+#hud[data-theme="night"] #clock {
+  background: rgba(28, 32, 46, 0.7);
+  border-color: rgba(180, 200, 230, 0.18);
+  color: rgba(236, 238, 246, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+}
+
+@media (max-width: 800px) {
+  #clock {
+    top: 12px;
+    height: 28px;
+    padding: 0 10px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 800px) {
+  #nav {
+    top: 12px;
+    left: 10px;
+    width: 108px;
+    gap: 8px;
+  }
+  .nav-btn {
+    height: 44px;
+    padding: 0 10px;
+    font-size: 13px;
+    border-radius: 14px;
+  }
+  #status {
+    top: 12px;
+    right: 10px;
+    left: 126px;
+    gap: 6px;
+  }
+  .chip {
+    height: 28px;
+    padding: 0 8px;
+    font-size: 11px;
+  }
+  #dock {
+    bottom: 56px;
+    width: calc(100% - 24px);
+  }
+  .compose-row {
+    min-height: 46px;
+    padding: 6px 8px 6px 10px;
+    border-radius: 16px;
+    flex-wrap: wrap;
+  }
+  .compose-label {
+    display: none;
+  }
+  #compose input[type="text"] {
+    font-size: 14px;
+    height: 32px;
+  }
+  #compose button[type="submit"],
+  #compose #mic-btn {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 13px;
+  }
+  .dialog-inner {
+    min-height: 52px;
+    padding: 12px 16px;
+    border-radius: 16px;
+  }
+  .dialog-text {
+    font-size: 15px;
+  }
+}
+
+#house-tools {
+  position: absolute;
+  left: 22px;
+  bottom: 28px;
+  display: flex;
+  gap: 8px;
+  z-index: 5;
+  pointer-events: auto;
+}
+
+#settings-btn,
+#diary-btn,
+#mute-btn {
+  height: 44px;
+  padding: 0 18px;
+  border: 1px solid rgba(160, 130, 100, 0.28);
+  border-radius: 18px;
+  background: rgba(255, 250, 244, 0.78);
+  box-shadow: 0 2px 10px rgba(80, 50, 20, 0.08);
+  color: #6a5544;
+  font: 500 15px/1 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  pointer-events: auto;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+#settings-btn:hover,
+#settings-btn.is-open,
+#diary-btn:hover,
+#diary-btn.is-open,
+#mute-btn:hover,
+#mute-btn.is-muted {
+  background: rgba(255, 248, 238, 0.94);
+  border-color: rgba(160, 130, 100, 0.42);
+  color: #4e3d2e;
+}
+
+#hud[data-theme="night"] #settings-btn,
+#hud[data-theme="night"] #diary-btn,
+#hud[data-theme="night"] #mute-btn {
+  background: rgba(28, 36, 54, 0.62);
+  border-color: rgba(180, 200, 230, 0.22);
+  color: rgba(230, 236, 248, 0.9);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.22);
+}
+
+#hud[data-theme="night"] #settings-btn:hover,
+#hud[data-theme="night"] #settings-btn.is-open,
+#hud[data-theme="night"] #diary-btn:hover,
+#hud[data-theme="night"] #diary-btn.is-open,
+#hud[data-theme="night"] #mute-btn:hover,
+#hud[data-theme="night"] #mute-btn.is-muted {
+  background: rgba(42, 54, 80, 0.86);
+  border-color: rgba(200, 215, 240, 0.38);
+  color: #f2f5fb;
+}
+
+#settings-panel,
+#diary-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: auto;
+  padding: 28px 16px 40px;
+  background: rgba(26, 22, 18, 0.42);
+  pointer-events: auto;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+#settings-panel[hidden],
+#diary-panel[hidden] {
+  display: none;
+}
+
+.settings-sheet {
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 22px 24px 28px;
+  border-radius: 24px;
+  background: rgba(255, 250, 244, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 16px 48px rgba(40, 24, 10, 0.22);
+  color: #5a4332;
+}
+
+.settings-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.settings-head h1 {
+  font: 600 22px/1.3 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.settings-lead,
+.settings-group-help,
+.settings-field-help,
+.settings-default {
+  color: #8a7464;
+}
+
+.settings-lead {
+  margin-top: 6px;
+  font: 400 13px/1.55 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  max-width: 36em;
+}
+
+.settings-head-actions {
+  display: flex;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.settings-close,
+.settings-save,
+.settings-restore {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(160, 130, 100, 0.28);
+  background: rgba(255, 252, 248, 0.9);
+  color: #5a4332;
+  font: 500 14px/1 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.settings-save {
+  background: rgba(255, 248, 238, 0.98);
+  font-weight: 600;
+}
+
+.settings-save:hover:not(:disabled),
+.settings-close:hover,
+.settings-restore:hover:not(:disabled) {
+  background: rgba(255, 252, 248, 1);
+}
+
+.settings-save:disabled,
+.settings-restore:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.settings-status {
+  margin: 0 0 16px;
+  font: 500 13px/1.5 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+}
+
+.settings-status.is-ok {
+  color: #4d6a46;
+}
+
+.settings-status.is-error {
+  color: #8a4a32;
+}
+
+.settings-status.is-warn {
+  color: #7a5a20;
+}
+
+.settings-secret {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-secret input[type="password"] {
+  flex: 1;
+}
+
+.settings-secret-clear {
+  flex: none;
+  border: 1px solid rgba(160, 130, 100, 0.28);
+  border-radius: 10px;
+  background: rgba(255, 252, 248, 0.95);
+  color: #6a5340;
+  font: 500 13px/1.2 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  padding: 7px 10px;
+  cursor: pointer;
+}
+
+.settings-secret-clear:hover {
+  background: rgba(248, 238, 220, 0.95);
+}
+
+.settings-body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.settings-group-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.settings-group h2 {
+  font: 600 16px/1.3 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  letter-spacing: 0.06em;
+}
+
+.settings-group-help,
+.settings-field-help,
+.settings-default {
+  margin-top: 4px;
+  font: 400 12px/1.55 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+}
+
+.settings-restore {
+  height: 30px;
+  padding: 0 10px;
+  font-size: 12px;
+  flex: 0 0 auto;
+}
+
+.settings-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.settings-chip {
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(160, 130, 100, 0.28);
+  background: rgba(255, 252, 248, 0.8);
+  color: #5a4332;
+  font: 500 14px/1 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  cursor: pointer;
+}
+
+.settings-chip.is-active {
+  background: rgba(255, 248, 238, 0.98);
+  font-weight: 600;
+  border-color: rgba(160, 130, 100, 0.42);
+}
+
+.settings-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.settings-field.is-dirty {
+  background: rgba(255, 246, 230, 0.7);
+}
+
+.settings-field-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 14px/1.3 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+}
+
+.settings-flag {
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: rgba(160, 130, 100, 0.16);
+  color: #8a7464;
+  font: 500 11px/18px "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+}
+
+.settings-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.settings-control input[type="text"],
+.settings-control input[type="password"],
+.settings-control input[type="number"],
+.settings-control input[type="time"],
+.settings-control select,
+.settings-control textarea {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid rgba(160, 130, 100, 0.28);
+  border-radius: 12px;
+  background: rgba(255, 252, 248, 0.95);
+  color: #4e3d2e;
+  font: 500 14px/1.4 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  outline: none;
+  padding: 8px 10px;
+}
+
+.settings-control textarea {
+  resize: vertical;
+  min-height: 72px;
+  border-radius: 14px;
+}
+
+.settings-unit {
+  flex: 0 0 auto;
+  color: #8a7464;
+  font: 500 12px/1 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+}
+
+.settings-toggle {
+  position: relative;
+  display: inline-flex;
+  width: 44px;
+  height: 26px;
+  flex: 0 0 auto;
+}
+
+.settings-toggle input {
+  appearance: none;
+  width: 44px;
+  height: 26px;
+  margin: 0;
+  border-radius: 999px;
+  background: rgba(160, 130, 100, 0.25);
+  cursor: pointer;
+  position: relative;
+  border: 0;
+}
+
+.settings-toggle input:checked {
+  background: rgba(120, 150, 90, 0.85);
+}
+
+.settings-toggle input::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fffaf4;
+  box-shadow: 0 1px 4px rgba(80, 50, 20, 0.2);
+  transition: transform 0.15s ease;
+}
+
+.settings-toggle input:checked::after {
+  transform: translateX(18px);
+}
+
+.settings-advanced {
+  border-top: 1px solid rgba(160, 130, 100, 0.18);
+  padding-top: 8px;
+}
+
+.settings-advanced > summary {
+  cursor: pointer;
+  font: 600 16px/1.6 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  letter-spacing: 0.06em;
+  list-style: none;
+  color: #5a4332;
+}
+
+.settings-advanced > summary::-webkit-details-marker {
+  display: none;
+}
+
+.settings-advanced > summary::after {
+  content: "展开";
+  margin-left: 10px;
+  font: 500 12px/1 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  color: #8a7464;
+}
+
+.settings-advanced[open] > summary::after {
+  content: "收起";
+}
+
+.settings-advanced .settings-group {
+  margin-top: 18px;
+}
+
+@media (max-width: 800px) {
+  #house-tools {
+    left: 10px;
+    bottom: 16px;
+  }
+  #settings-btn,
+  #diary-btn,
+  #mute-btn {
+    height: 36px;
+    padding: 0 12px;
+    font-size: 13px;
+    border-radius: 14px;
+  }
+  .settings-sheet {
+    padding: 16px 14px 22px;
+    border-radius: 18px;
+  }
+  .settings-head {
+    flex-direction: column;
+  }
+  .settings-head h1 {
+    font-size: 18px;
+  }
+}
+
+.diary-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.diary-card {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(160, 130, 100, 0.12);
+}
+
+.diary-card-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.diary-period {
+  font: 600 14px/1.3 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  color: #5a4332;
+}
+
+.diary-time {
+  margin-left: auto;
+  color: #8a7464;
+  font: 400 12px/1 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+}
+
+.diary-text {
+  font: 400 14px/1.7 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  color: #5a4332;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.diary-empty {
+  color: #8a7464;
+  font: 400 13px/1.55 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+}
+
+.diary-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.diary-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.45);
+  font: 400 14px/1.55 "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+}
+
+.diary-list li span {
+  flex: 1;
+  min-width: 0;
+}
+
+.diary-list .diary-time {
+  margin-left: 0;
+  flex: 0 0 auto;
+}

@@ -1,0 +1,17 @@
+{
+  "edges": [
+    { "from": "qingqing", "to": "viewer", "familiarity": 18, "closeness": 18, "stance": "companion" },
+    { "from": "viewer", "to": "qingqing", "familiarity": 18, "closeness": 18, "stance": "companion" },
+    { "from": "linxia", "to": "viewer", "familiarity": 16, "closeness": 16, "stance": "roommate" },
+    { "from": "viewer", "to": "linxia", "familiarity": 16, "closeness": 16, "stance": "roommate" },
+    { "from": "xiaonan", "to": "viewer", "familiarity": 15, "closeness": 15, "stance": "friend" },
+    { "from": "viewer", "to": "xiaonan", "familiarity": 15, "closeness": 15, "stance": "friend" },
+
+    { "from": "qingqing", "to": "linxia", "familiarity": 22, "closeness": 20, "stance": "friend" },
+    { "from": "linxia", "to": "qingqing", "familiarity": 20, "closeness": 16, "stance": "roommate" },
+    { "from": "qingqing", "to": "xiaonan", "familiarity": 24, "closeness": 22, "stance": "friend" },
+    { "from": "xiaonan", "to": "qingqing", "familiarity": 24, "closeness": 23, "stance": "friend" },
+    { "from": "linxia", "to": "xiaonan", "familiarity": 16, "closeness": 14, "stance": "roommate" },
+    { "from": "xiaonan", "to": "linxia", "familiarity": 18, "closeness": 16, "stance": "roommate" }
+  ]
+}

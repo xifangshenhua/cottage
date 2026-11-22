@@ -1,0 +1,75 @@
+{
+  "model": {
+    "provider": "minimax",
+    "model": "MiniMax-M3.1-Flash"
+  },
+  "identityCardChars": 280,
+  "think": {
+    "timeoutMs": 20000
+  },
+  "speech": {
+    "maxPerGameDay": 4,
+    "minGapMin": 45,
+    "quietStartHhmm": "22:00",
+    "quietEndHhmm": "07:30",
+    "dayStartHhmm": "07:00"
+  },
+  "chat": {
+    "maxInputChars": 200,
+    "maxReplyChars": 100,
+    "timeoutMs": 20000,
+    "mustShareRoom": true,
+    "canTalkWhenSleeping": false,
+    "canTalkWhenWashing": false,
+    "countAgainstProactiveCap": false,
+    "defaultTone": "natural",
+    "allowedTones": [
+      "natural",
+      "gentle",
+      "concise",
+      "lively"
+    ],
+    "defaultLength": "medium",
+    "allowedLengths": [
+      "short",
+      "medium"
+    ],
+    "styleInstructionsChars": 120,
+    "addressing": {
+      "defaultVolume": "normal",
+      "volumes": [
+        {
+          "id": "whisper",
+          "label": "悄悄",
+          "range": "target",
+          "requiresTarget": true
+        },
+        {
+          "id": "normal",
+          "label": "普通",
+          "range": "room",
+          "requiresTarget": false
+        },
+        {
+          "id": "loud",
+          "label": "大声",
+          "range": "house",
+          "requiresTarget": false
+        }
+      ],
+      "canHearWhenSleeping": false,
+      "canHearWhenWashing": true,
+      "isolatedRooms": [],
+      "maxResponders": 1,
+      "sameRoomFirst": true,
+      "unaddressedPick": "closeness",
+      "actionPreference": [
+        "talk",
+        "sit",
+        "eat"
+      ],
+      "contextChars": 160,
+      "houseLock": true
+    }
+  }
+}

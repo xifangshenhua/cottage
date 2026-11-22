@@ -1,0 +1,40 @@
+{
+  "frame": {
+    "width": 600,
+    "height": 800
+  },
+  "pivot": {
+    "x": 0.5,
+    "y": 1.0
+  },
+  "poses": {
+    "sit": {
+      "file": "sit.png",
+      "pivot": {
+        "x": 0.5,
+        "y": 0.65
+      }
+    },
+    "eat": {
+      "file": "eat.png",
+      "pivot": {
+        "x": 0.5,
+        "y": 0.64
+      }
+    },
+    "wash": {
+      "file": "wash.png",
+      "pivot": {
+        "x": 0.5,
+        "y": 1.0
+      }
+    },
+    "sleep": {
+      "file": "sleep.png",
+      "pivot": {
+        "x": 0.5,
+        "y": 0.75
+      }
+    }
+  }
+}

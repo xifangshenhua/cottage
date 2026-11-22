@@ -1,0 +1,12 @@
+node_modules
+dist
+.env
+data/world.json
+data/house.pid
+logs
+previews
+data/*.sqlite
+data/*.sqlite-*
+data/voice-cache/
+
+data/secrets.json

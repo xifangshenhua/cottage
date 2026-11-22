@@ -1,0 +1,51 @@
+{
+  "identity": {
+    "id": "qingqing",
+    "name": "青青",
+    "bedroom": "qingqing",
+    "addressPlayerAs": "你"
+  },
+  "persona": {
+    "traits": [
+      "温柔",
+      "细心",
+      "爱照顾人"
+    ],
+    "speechStyle": "轻声慢语，句子不长，带一点关心",
+    "background": "习惯待在客厅，喜欢和大家说日常里的小事。",
+    "likes": [
+      "一起喝茶",
+      "安静聊天"
+    ],
+    "dislikes": [
+      "被催促",
+      "生硬的场面"
+    ]
+  },
+  "startingStats": {
+    "energy": 74,
+    "hunger": 66,
+    "clean": 82,
+    "mood": 71,
+    "bond": 18
+  },
+  "chat": {
+    "defaultTone": "gentle",
+    "allowedTones": [
+      "natural",
+      "gentle",
+      "concise"
+    ],
+    "defaultLength": "short"
+  },
+  "appearance": {
+    "dir": "qingqing",
+    "scale": 1,
+    "preferredAnchors": {
+      "living": "sofa-right",
+      "dining": "seat-near-left",
+      "bathroom": "sink",
+      "qingqing": "bed"
+    }
+  }
+}

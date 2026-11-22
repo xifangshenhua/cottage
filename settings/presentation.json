@@ -1,0 +1,190 @@
+{
+  "pack": "v1",
+  "presenter": "html",
+  "artWidth": 1280,
+  "artHeight": 720,
+  "fit": "cover",
+  "maxVisiblePerRoom": 3,
+  "fallbackPose": "sit",
+  "poseAlias": {
+    "talk": "sit",
+    "idle": "sit"
+  },
+  "transitionMs": 200,
+  "clickToFocus": true,
+  "showNameplates": true,
+  "assets": {
+    "rooms": "/assets/rooms/{pack}/{roomId}.jpg",
+    "characters": "/assets/characters/{pack}/{characterId}/{pose}.png",
+    "fallback": "/assets/characters/{pack}/fallback/{pose}.png"
+  },
+  "rooms": {
+    "living": {
+      "id": "living",
+      "anchors": [
+        {
+          "id": "sofa-left",
+          "x": 0.335,
+          "y": 0.508,
+          "poses": [
+            "sit",
+            "talk"
+          ],
+          "scale": 0.54
+        },
+        {
+          "id": "sofa-right",
+          "x": 0.55,
+          "y": 0.46,
+          "poses": [
+            "sit",
+            "talk"
+          ],
+          "scale": 0.54
+        }
+      ],
+      "props": [
+        {
+          "id": "coffee-table",
+          "url": "/assets/rooms/v1/living-table.png",
+          "z": 0.85
+        }
+      ]
+    },
+    "dining": {
+      "id": "dining",
+      "anchors": [
+        {
+          "id": "seat-near-left",
+          "x": 0.42,
+          "y": 0.835,
+          "poses": [
+            "eat",
+            "sit",
+            "talk"
+          ],
+          "scale": 0.38
+        },
+        {
+          "id": "seat-near-right",
+          "x": 0.7,
+          "y": 0.83,
+          "poses": [
+            "eat",
+            "sit",
+            "talk"
+          ],
+          "scale": 0.38
+        },
+        {
+          "id": "seat-far-left",
+          "x": 0.51,
+          "y": 0.58,
+          "poses": [
+            "eat",
+            "sit",
+            "talk"
+          ],
+          "scale": 0.3
+        },
+        {
+          "id": "seat-far-right",
+          "x": 0.79,
+          "y": 0.58,
+          "poses": [
+            "eat",
+            "sit",
+            "talk"
+          ],
+          "scale": 0.3
+        }
+      ],
+      "props": [
+        {
+          "id": "dining-table",
+          "url": "/assets/rooms/v1/dining-table.png",
+          "z": 0.7
+        }
+      ]
+    },
+    "bathroom": {
+      "id": "bathroom",
+      "anchors": [
+        {
+          "id": "sink",
+          "x": 0.8,
+          "y": 0.96,
+          "poses": [
+            "wash"
+          ],
+          "scale": 0.7
+        }
+      ],
+      "props": []
+    },
+    "qingqing": {
+      "id": "qingqing",
+      "anchors": [
+        {
+          "id": "bed",
+          "x": 0.35,
+          "y": 0.57,
+          "poses": [
+            "sleep",
+            "sit",
+            "talk"
+          ],
+          "scale": 0.6
+        }
+      ],
+      "props": [
+        {
+          "id": "duvet",
+          "url": "/assets/rooms/v1/qingqing-duvet.png",
+          "z": 0.85
+        }
+      ]
+    },
+    "linxia": {
+      "id": "linxia",
+      "anchors": [
+        {
+          "id": "bed",
+          "x": 0.35,
+          "y": 0.7,
+          "poses": [
+            "sleep",
+            "sit",
+            "talk"
+          ],
+          "scale": 0.58
+        }
+      ],
+      "props": [
+        {
+          "id": "duvet",
+          "url": "/assets/rooms/v1/linxia-duvet.png",
+          "z": 0.85
+        }
+      ]
+    },
+    "xiaonan": {
+      "id": "xiaonan",
+      "anchors": [
+        {
+          "id": "bed",
+          "x": 0.64,
+          "y": 0.56,
+          "poses": [
+            "sleep",
+            "sit",
+            "talk"
+          ],
+          "scale": 0.62
+        }
+      ],
+      "props": []
+    }
+  },
+  "props": []
+}
